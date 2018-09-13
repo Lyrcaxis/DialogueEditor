@@ -1,9 +1,7 @@
 # DialogueEditor
-Simple dialogue editor
+**This was programmed using C#7.2 , and uses some C#7.2 exclusive features, like tuples and local functions.**
 
-This was programmed using C#7.2 , and uses some C#7.2 exclusive features, like tuples and local functions.
-
-**To enable C#7.2 install the Incremental Compiler from Unity's Package Manager** http://prntscr.com/ku333e
+**To enable C#7.2 install the Incremental Compiler from Unity's Package Manager** http://prntscr.com/ku333e **make sure to restart unity after you install the package**
 
 **-- Usage is simple --**
 
