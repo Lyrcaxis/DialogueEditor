@@ -1,4 +1,4 @@
-﻿using System.Collections;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEditor;
 using UnityEngine;
@@ -30,7 +30,7 @@ namespace Design.DialogueEditor {
 			Vector2 mouseOffset = PreviousPosition - CurrentPos;
 			ScrollPosition += mouseOffset;
 			PreviousPosition = CurrentPos;
-			Event.current.Use(); //this makes the event not used to drag windows
+			Event.current.Use(); //this event should not be used to drag windows
 		}
 
 		Vector2 clickPos;
@@ -50,7 +50,7 @@ namespace Design.DialogueEditor {
 		}
 
 		void CancelAction() {
-			if (!activeCon.Value.Item3) { //IF ACTIVE IS OUTPUT
+			if (!activeCon.Value.Item3) {  //IF ACTIVE IS OUTPUT
 				if (activeCon.Value.Item4) { NodeByID(activeCon.Value.Item1).RefreshConnections(activeCon.Value.Item2); }
 				else {
 					var c = ChoiceByID(activeCon.Value.Item1);
@@ -64,7 +64,7 @@ namespace Design.DialogueEditor {
 					bool validChoice = ChoiceByID(i) != null && ChoiceByID(i).ID != -1;
 
 					if (activeCon.Value.Item4) { //IF ACTIVE IS NODE 
-						if (validChoice) {
+						if (validChoice) {	
 							var con = cur.Choices[i].Connections;
 							var nodeID = activeCon.Value.Item1;
 							var conID = activeCon.Value.Item2;
@@ -121,23 +121,33 @@ namespace Design.DialogueEditor {
 			Node n = cur.Nodes[i];
 
 			GenericMenu Menu = new GenericMenu();
-			Menu.AddItem(new GUIContent("Inspect"),false,()=>NodeInspector.Inspect(n));
-			Menu.AddItem(new GUIContent("Clear Connections"),!n.Connections.Any(x => x.targetChoiceID != -1),()=>DisconnectAll(n));
-			Menu.AddItem(new GUIContent("Clear Functions"),n.actionsOnAppear.Count == 0,()=>n.actionsOnAppear = new List<System.Action>());
-			Menu.AddItem(new GUIContent("Clear All"),false,()=>cur.Nodes[i] = new Node(n.ID,n.PositionInGrid));
+			Menu.AddItem(new GUIContent("Inspect"),false,Inspect);
+			Menu.AddItem(new GUIContent("Clear Connections"),!n.Connections.Any(x => x.targetChoiceID != -1),ClearCons);
+			Menu.AddItem(new GUIContent("Clear Functions"),n.actionsOnAppear.Count == 0,ClearFuncts);
+			Menu.AddItem(new GUIContent("Clear All"),false,ClearAll);
 			Menu.ShowAsContext();
+
+			void Inspect() { NodeInspector.Inspect(n); }
+			void ClearCons() { DisconnectAll(n); }
+			void ClearFuncts() { n.actionsOnAppear = new List<System.Action>(); }
+			void ClearAll() { cur.Nodes[i] = new Node(n.ID,n.PositionInGrid); }
 		}
 
 		void RightClick_Window_Choice(int i) {
 			DialogueChoice c = cur.Choices[i];	
 
 			GenericMenu Menu = new GenericMenu();
-			Menu.AddItem(new GUIContent("Inspect"),false,()=>NodeInspector.Inspect(c));
+			Menu.AddItem(new GUIContent("Inspect"),false,Inspect);
 			bool hasConnections = c.Connections.mainNodeID != -1 || c.Connections.secondaryNodeID != -1;
-			Menu.AddItem(new GUIContent("Clear Connections"),!hasConnections,()=>DisconnectAll(c));
-			Menu.AddItem(new GUIContent("Clear Conditions"),c.conditionsToAppear.Count == 0,()=>c.conditionsToAppear = new List<System.Func<bool>>());
-			Menu.AddItem(new GUIContent("Clear All"),false,()=>cur.Choices[i] = new DialogueChoice(c.ID,c.PositionInGrid));
+			Menu.AddItem(new GUIContent("Clear Connections"),!hasConnections,ClearCons);
+			Menu.AddItem(new GUIContent("Clear Conditions"),c.conditionsToAppear.Count == 0,ClearFuncts);
+			Menu.AddItem(new GUIContent("Clear All"),false,ClearAll);
 			Menu.ShowAsContext();
+
+			void Inspect() { NodeInspector.Inspect(c); }
+			void ClearCons() { DisconnectAll(c); }
+			void ClearFuncts() { c.conditionsToAppear = new List<System.Func<bool>>(); }
+			void ClearAll() { cur.Choices[i] = new DialogueChoice(c.ID,c.PositionInGrid); }
 		}
 
 		void LeftClick() {
