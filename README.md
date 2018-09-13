@@ -1,5 +1,5 @@
 # DialogueEditor
-# Simple dialogue editor
+Simple dialogue editor
 
 This was programmed using C#7.2 , and uses some exclusive features(like local functions).
 If you wish to use it in a pre-C#7.2 environment, you will have to move the local functions outside to the class.
