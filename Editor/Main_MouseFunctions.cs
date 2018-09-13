@@ -30,7 +30,7 @@ namespace Design.DialogueEditor {
 			Vector2 mouseOffset = PreviousPosition - CurrentPos;
 			ScrollPosition += mouseOffset;
 			PreviousPosition = CurrentPos;
-			Event.current.Use(); //this event should not be used to drag windows
+			Event.current.Use(); //this makes the event not used to drag windows
 		}
 
 		Vector2 clickPos;
