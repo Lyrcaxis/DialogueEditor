@@ -3,6 +3,8 @@ Simple dialogue editor
 
 This was programmed using C#7.2 , and may use some exclusive features.
 
+**To enable C#7.2 install the Incremental Compiler from Unity's Package Manager** http://prntscr.com/ku333e
+
 **-- Usage is simple --**
 
 Right click on Project Panel --> Create --> Dialogue to create a dialogue for an NPC.
