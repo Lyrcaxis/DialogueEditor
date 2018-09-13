@@ -50,7 +50,7 @@ namespace Design.DialogueEditor {
 		}
 
 		void CancelAction() {
-			if (!activeCon.Value.Item3) { //ONLY IF IS OUTPUT
+			if (!activeCon.Value.Item3) { //IF ACTIVE IS OUTPUT
 				if (activeCon.Value.Item4) { NodeByID(activeCon.Value.Item1).RefreshConnections(activeCon.Value.Item2); }
 				else {
 					var c = ChoiceByID(activeCon.Value.Item1);
@@ -58,12 +58,12 @@ namespace Design.DialogueEditor {
 					else if (activeCon.Value.Item2 == 1) { c.Connections.secondaryNodeID = c.Connections.secondaryConnectionID = -1; }
 				}
 			}
-			else { //ONLY IF ITS INPUT
+			else { //IF ACTIVE IS INPUT -- gotta scan through all outputs to see for connections
 				for (int i = 0; i < 50; i++) {
 					bool validNode = NodeByID(i) != null && NodeByID(i).ID != -1;
 					bool validChoice = ChoiceByID(i) != null && ChoiceByID(i).ID != -1;
 
-					if (activeCon.Value.Item4) { //NODE
+					if (activeCon.Value.Item4) { //IF ACTIVE IS NODE 
 						if (validChoice) {
 							var con = cur.Choices[i].Connections;
 							var nodeID = activeCon.Value.Item1;
@@ -72,7 +72,7 @@ namespace Design.DialogueEditor {
 							if (con.secondaryNodeID == nodeID && con.secondaryConnectionID == conID) { con.secondaryNodeID = con.secondaryConnectionID = -1; }
 						}
 					}
-					else if (validChoice) { //CHOICE
+					else if (validNode) { //IF ACTIVE IS CHOICE && NODE IS VALID
 						foreach (var con in cur.Nodes[i].Connections) {
 							if (con.targetChoiceID == activeCon.Value.Item1 && con.targetConnectionInput == activeCon.Value.Item2) { con.targetChoiceID = con.targetConnectionInput = -1; }
 						}
