@@ -9,4 +9,4 @@ Right click on Project Panel --> Create --> Dialogue to create a dialogue for an
 
 Windows --> Open Dialogue editor to open the editor.
 
-Drag Middle Mouse button to navigate in editor, Right click to open menus
+Drag Middle Mouse button to navigate in editor, Right click to pop-up menus
