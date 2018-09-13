@@ -121,33 +121,23 @@ namespace Design.DialogueEditor {
 			Node n = cur.Nodes[i];
 
 			GenericMenu Menu = new GenericMenu();
-			Menu.AddItem(new GUIContent("Inspect"),false,Inspect);
-			Menu.AddItem(new GUIContent("Clear Connections"),!n.Connections.Any(x => x.targetChoiceID != -1),ClearCons);
-			Menu.AddItem(new GUIContent("Clear Functions"),n.actionsOnAppear.Count == 0,ClearFuncts);
-			Menu.AddItem(new GUIContent("Clear All"),false,ClearAll);
+			Menu.AddItem(new GUIContent("Inspect"),false,()=>NodeInspector.Inspect(n));
+			Menu.AddItem(new GUIContent("Clear Connections"),!n.Connections.Any(x => x.targetChoiceID != -1),()=>DisconnectAll(n));
+			Menu.AddItem(new GUIContent("Clear Functions"),n.actionsOnAppear.Count == 0,()=>n.actionsOnAppear = new List<System.Action>());
+			Menu.AddItem(new GUIContent("Clear All"),false,()=>cur.Nodes[i] = new Node(n.ID,n.PositionInGrid));
 			Menu.ShowAsContext();
-
-			void Inspect() { NodeInspector.Inspect(n); }
-			void ClearCons() { DisconnectAll(n); }
-			void ClearFuncts() { n.actionsOnAppear = new List<System.Action>(); }
-			void ClearAll() { cur.Nodes[i] = new Node(n.ID,n.PositionInGrid); }
 		}
 
 		void RightClick_Window_Choice(int i) {
 			DialogueChoice c = cur.Choices[i];	
 
 			GenericMenu Menu = new GenericMenu();
-			Menu.AddItem(new GUIContent("Inspect"),false,Inspect);
+			Menu.AddItem(new GUIContent("Inspect"),false,()=>NodeInspector.Inspect(c));
 			bool hasConnections = c.Connections.mainNodeID != -1 || c.Connections.secondaryNodeID != -1;
-			Menu.AddItem(new GUIContent("Clear Connections"),!hasConnections,ClearCons);
-			Menu.AddItem(new GUIContent("Clear Conditions"),c.conditionsToAppear.Count == 0,ClearFuncts);
-			Menu.AddItem(new GUIContent("Clear All"),false,ClearAll);
+			Menu.AddItem(new GUIContent("Clear Connections"),!hasConnections,()=>DisconnectAll(c));
+			Menu.AddItem(new GUIContent("Clear Conditions"),c.conditionsToAppear.Count == 0,()=>c.conditionsToAppear = new List<System.Func<bool>>());
+			Menu.AddItem(new GUIContent("Clear All"),false,()=>cur.Choices[i] = new DialogueChoice(c.ID,c.PositionInGrid));
 			Menu.ShowAsContext();
-
-			void Inspect() { NodeInspector.Inspect(c); }
-			void ClearCons() { DisconnectAll(c); }
-			void ClearFuncts() { c.conditionsToAppear = new List<System.Func<bool>>(); }
-			void ClearAll() { cur.Choices[i] = new DialogueChoice(c.ID,c.PositionInGrid); }
 		}
 
 		void LeftClick() {
