@@ -41,9 +41,12 @@ namespace Design.DialogueEditor {
 
 			tree.Add("NPCS",null);
 			tree.Add("NPCS/None",null);
+			//If you decide to use the DialogueEditorSettings, you can use it as such, after you Create one
 			//tree.AddAllAssetsAtPath("NPCS",DialogueEditorSettings.instance.NPCPath,typeof(NPCDialogue),true);
-			tree.AddAllAssetsAtPath("NPCS","",typeof(NPCDialogue),true);
-			tree.EnumerateTree().AddIcons<NPCDialogue>(x => x.icon);
+			try { //Quickest way to avoid null ref exception barrage if there are no assets 
+				tree.AddAllAssetsAtPath("NPCS","",typeof(NPCDialogue),true);
+				tree.EnumerateTree().AddIcons<NPCDialogue>(x => x.icon);
+			} catch { }
 			return tree;
 		}
 
