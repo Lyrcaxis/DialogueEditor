@@ -46,7 +46,7 @@ namespace Design.DialogueEditor {
 			try { //Try to avoid null ref exception
 				tree.AddAllAssetsAtPath("NPCS","",typeof(NPCDialogue),true);
 				tree.EnumerateTree().AddIcons<NPCDialogue>(x => x.icon);
-			} catch { }
+			} catch { } 
 			return tree;
 		}
 
