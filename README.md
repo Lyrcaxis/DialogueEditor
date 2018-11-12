@@ -1,7 +1,7 @@
 # DialogueEditor using Odin Inspector
 **This was programmed using C#7.2 , and uses some C#7.2 exclusive features, like tuples and local functions.**
 
-To enable C#7.2 install the Incremental Compiler from Unity's Package Manager. Make sure to restart unity after you install the package**
+To enable C#7.2 install the Incremental Compiler from Unity's Package Manager.
 
 **-- Usage is simple --**
 
